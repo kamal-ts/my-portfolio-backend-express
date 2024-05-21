@@ -1,0 +1,12 @@
+### 
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "username": "kamal", 
+    "password": "123",
+    "name": "La Ode Kamaluddin"
+}
+
+### 
+GET http://localhost:3000/api/users
