@@ -41,18 +41,22 @@ const login = async (request) => {
 
     const loginRequest = validate(loginUserValidation, request);
 
+    // search user data base on username in requst data
     let user = await prismaClient.user.findUnique({
         where: {
             username: loginRequest.username
         }
     });
 
+    // check whether the user is exist then reject it if not exist
     if (!user) {
         throw new ResponseError(401, "username or password is wrong");
     }
 
+    // check whether the password from request data and from user data is match or not using bcrypt compare
     const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
-
+    
+    // rejact it when not match
     if (!isPasswordValid) {
         throw new ResponseError(401, "usename or password is wrong");
     }

@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
-import { removeTestUser } from "./test-util.js";
+import { createTestUser, removeTestUser } from "./test-util.js";
 
 
 describe('POST /api/users', function () {
@@ -69,3 +69,27 @@ describe('POST /api/users', function () {
 
 });
 
+describe('POST /api/users/login', function () {
+
+    beforeEach(async () => {
+        await createTestUser();
+    });
+    afterEach(async () => {
+        await removeTestUser();
+    })
+
+    it('Should able to login', async () => {
+        const result = await supertest(web)
+                        .post('/api/users/login')
+                        .send({
+                            username: "test",
+                            password: "rahasia"
+                        });
+        expect(result.status).toBe(200);
+        expect(result.body.data.token).toBeDefined();
+        expect(result.body.data.token).not.toBe("test");
+
+    })
+
+
+})
