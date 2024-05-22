@@ -1,9 +1,9 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { registerUserValidation } from "../validation/user-validation.js";
+import { loginUserValidation, registerUserValidation } from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js";
 import bcrypt from 'bcrypt';
-
+import { v4 as uuid } from 'uuid'
 
 const register = async (request) => {
 
@@ -37,15 +37,49 @@ const register = async (request) => {
     return result;
 };
 
+const login = async (request) => {
+
+    const loginRequest = validate(loginUserValidation, request);
+
+    let user = await prismaClient.user.findUnique({
+        where: {
+            username: loginRequest.username
+        }
+    });
+
+    if (!user) {
+        throw new ResponseError(401, "username or password is wrong");
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
+
+    if (!isPasswordValid) {
+        throw new ResponseError(401, "usename or password is wrong");
+    }
+
+    const token = uuid().toString();
+    return prismaClient.user.update({
+        data: {
+            token: token
+        },
+        where: {
+            username: user.username
+        },
+        select: {
+            token: true
+        }
+    });
+}
 
 const getUsers = async () => {
 
     const user = await prismaClient.user.findMany();
-    
+
     return user;
 };
 
 export default {
     register,
-    getUsers
+    getUsers,
+    login
 }

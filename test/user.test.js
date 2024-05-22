@@ -1,32 +1,27 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
-import { prismaClient } from "../src/application/database.js";
-import { logger } from "../src/application/logging.js";
+import { removeTestUser } from "./test-util.js";
 
 
 describe('POST /api/users', function () {
 
     afterEach(async () => {
-        await prismaClient.user.deleteMany({
-            where: {
-                username: "kamaluddin",
-            }
-        })
+        await removeTestUser();
     });
 
     it('Sould able to register new user', async () => {
         const result = await supertest(web)
             .post('/api/users')
             .send({
-                username: "kamaluddin",
+                username: "test",
                 password: "rahasia",
-                name: "La Ode Kamaluddin",
+                name: "test",
 
             });
 
         expect(result.status).toBe(200);
-        expect(result.body.data.username).toBe("kamaluddin");
-        expect(result.body.data.name).toBe("La Ode Kamaluddin");
+        expect(result.body.data.username).toBe("test");
+        expect(result.body.data.name).toBe("test");
         expect(result.body.data.password).toBeUndefined;
     });
 
@@ -48,23 +43,23 @@ describe('POST /api/users', function () {
         let result = await supertest(web)
             .post('/api/users')
             .send({
-                username: "kamaluddin",
+                username: "test",
                 password: "rahasia",
-                name: "La Ode Kamaluddin",
+                name: "test",
 
             });
 
         expect(result.status).toBe(200);
-        expect(result.body.data.username).toBe("kamaluddin");
-        expect(result.body.data.name).toBe("La Ode Kamaluddin");
+        expect(result.body.data.username).toBe("test");
+        expect(result.body.data.name).toBe("test");
         expect(result.body.data.password).toBeUndefined;
 
         result = await supertest(web)
             .post('/api/users')
             .send({
-                username: "kamaluddin",
+                username: "test",
                 password: "rahasia",
-                name: "La Ode Kamaluddin",
+                name: "test",
 
             });
 
@@ -72,4 +67,5 @@ describe('POST /api/users', function () {
         expect(result.body.errors).toBeDefined();
     });
 
-})
+});
+
