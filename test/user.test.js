@@ -1,8 +1,8 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
-import { createTestUser, removeTestUser } from "./test-util.js";
+import { createTestUser, getTestUser, removeTestUser } from "./test-util.js";
 import { logger } from "../src/application/logging.js";
-
+import bcrypt from 'bcrypt';
 
 describe('POST /api/users', function () {
 
@@ -143,9 +143,36 @@ describe('GET /api/users/current', function () {
     it('Should reject if token is invalid', async function () {
         const result = await supertest(web)
             .get('/api/users/current')
-            .set('Authorization', 'false');
+            .set('Authorization', 'wrong');
         expect(result.status).toBe(401);
         expect(result.body.data).toBeUndefined();
         expect(result.body.errors).toBeDefined();
     });
+});
+
+describe('UPDATE /api/users/current', function () {
+    beforeEach(async () => {
+        await createTestUser();
+    });
+    afterEach(async () => {
+        await removeTestUser();
+    })
+
+    it('Should able to update user', async () => {
+        const result = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', 'test')
+            .send({
+                name: "kamal",
+                password: "rahasialagi"
+            });
+        expect(result.status).toBe(200);
+        // username harus "test" sesuai dengan yang diinput pada test-utils
+        expect(result.body.data.username).toBe("test");
+        expect(result.body.data.name).toBe("kamal");
+
+        const user = await getTestUser();
+        expect(await bcrypt.compare("rahasialagi", user.password)).toBe(true);
+        
+    })
 })
