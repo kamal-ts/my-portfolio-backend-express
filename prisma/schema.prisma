@@ -30,13 +30,13 @@ model User {
 model MyProject {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(100)
-  tag         String[]
+  tag         String[] @db.VarChar(100)
   category    String[] @db.VarChar(100)
   description String
-  link_web    String?  @db.VarChar(255)
-  link_git    String   @db.VarChar(255)
-  image       String?  @db.VarChar(255)
-  author      String
+  link_web    String?  @db.VarChar(100)
+  link_git    String   @db.VarChar(100)
+  image       String?  @db.VarChar(100)
+  author      String   @db.VarChar(100)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

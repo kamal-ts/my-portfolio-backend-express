@@ -13,10 +13,25 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-    "username": "idha", 
-    "password": "idha"
+    "username": "mila", 
+    "password": "mila"
 }
 
 ### 
 GET http://localhost:3000/api/users/current
 Authorization: Unknown
+
+### 
+POST http://localhost:3000/api/myprojects
+Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
+Content-Type: application/json
+
+{
+        "title": "test",
+        "tag": ["express", "nodejs"],
+        "category": ["web"],
+        "description": "test",
+        "link_web": "test.web",
+        "link_git": "test.git",
+        "image": "test.jpg"
+}

@@ -26,4 +26,12 @@ export const getTestUser = async () => {
             username: "test"
         }
     });
-}
+};
+
+export const removeAllTestMyproject = async () => {
+    return prismaClient.myProject.deleteMany({
+        where: {
+            author: "test"
+        }
+    });
+};

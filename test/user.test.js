@@ -23,7 +23,7 @@ describe('POST /api/users', function () {
         expect(result.status).toBe(200);
         expect(result.body.data.username).toBe("test");
         expect(result.body.data.name).toBe("test");
-        expect(result.body.data.password).toBeUndefined;
+        expect(result.body.data.password).toBeUndefined();
     });
 
     it('Sould reject if request is invalid', async () => {
@@ -53,7 +53,7 @@ describe('POST /api/users', function () {
         expect(result.status).toBe(200);
         expect(result.body.data.username).toBe("test");
         expect(result.body.data.name).toBe("test");
-        expect(result.body.data.password).toBeUndefined;
+        expect(result.body.data.password).toBeUndefined();
 
         result = await supertest(web)
             .post('/api/users')
@@ -83,7 +83,6 @@ describe('POST /api/users/login', function () {
                 username: "test",
                 password: "rahasia"
             });
-        logger.info(result.body);
         expect(result.status).toBe(200);
         expect(result.body.data.token).toBeDefined();
         expect(result.body.data.token).not.toBe("test");
@@ -245,5 +244,12 @@ describe('DELETE /api/users/logout', function () {
 
         const user = await getTestUser();
         expect(user.token).toBeNull();
+    })
+    it('It Should reject logout if token is invalid', async () => {
+        const result = await supertest(web)
+            .delete('/api/users/logout')
+            .set('Authorization', 'salah');
+
+        expect(result.status).toBe(401);
     })
 })
