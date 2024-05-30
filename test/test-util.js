@@ -29,7 +29,7 @@ export const getTestUser = async () => {
 };
 
 export const removeAllTestMyproject = async () => {
-    return prismaClient.myProject.deleteMany({
+    await prismaClient.myProject.deleteMany({
         where: {
             author: "test"
         }
