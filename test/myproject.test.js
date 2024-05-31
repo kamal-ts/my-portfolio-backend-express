@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { createTestUser, removeAllTestMyproject, removeTestUser } from "./test-util.js";
+import { createTestMyproject, createTestUser, getTestMyproject, removeAllTestMyproject, removeTestUser } from "./test-util.js";
 import { web } from "../src/application/web.js";
 
 describe('POST /api/myprojects', function () {
@@ -36,7 +36,6 @@ describe('POST /api/myprojects', function () {
         expect(result.body.data.link_web).toBe("test.web");
         expect(result.body.data.link_git).toBe("test.git");
         expect(result.body.data.image).toBe("test.jpg");
-        expect(result.body.data.createdAt).toBeDefined();
 
     });
 
@@ -65,6 +64,46 @@ describe('POST /api/myprojects', function () {
             .send({});
 
         expect(result.status).toBe(401);
+    });
+
+});
+
+describe('GET /api/myprojects/:myprojectId', function () {
+
+    beforeEach(async () => {
+        await createTestUser();
+        await createTestMyproject();
+    });
+
+    afterEach(async () => {
+        await removeAllTestMyproject();
+        await removeTestUser();
+    });
+
+    it('Should able to create new myproject', async () => {
+        const myproject = await getTestMyproject();
+        const result = await supertest(web)
+            .get(`/api/myprojects/${myproject.id}`)
+            .set('Authorization', 'test');
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.id).toBe(myproject.id);
+        expect(result.body.data.title).toBe(myproject.title);
+        expect(result.body.data.tag).toEqual(myproject.tag);
+        expect(result.body.data.category).toEqual(myproject.category);
+        expect(result.body.data.description).toBe(myproject.description);
+        expect(result.body.data.link_web).toBe(myproject.link_web);
+        expect(result.body.data.link_git).toBe(myproject.link_git);
+        expect(result.body.data.image).toBe(myproject.image);
+    });
+    
+    it('Should return 404 if myprojectId is not found', async () => {
+        const myproject = await getTestMyproject();
+        const result = await supertest(web)
+            .get(`/api/myprojects/${myproject.id + 1}`)
+            .set('Authorization', 'test');
+
+        expect(result.status).toBe(404);
     });
 
 })

@@ -15,6 +15,9 @@ userRouter.delete('/api/users/logout', userController.logout);
 
 // myproject API
 userRouter.post('/api/myprojects', myprojectController.create);
+userRouter.get('/api/myprojects/:myprojectId', myprojectController.get);
+
+
 
 export {
     userRouter,

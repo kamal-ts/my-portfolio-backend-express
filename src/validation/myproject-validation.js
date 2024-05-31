@@ -30,8 +30,9 @@ const createMyprojectValidation = Joi.object({
         .max(100)
 });
 
+const getMyprojectValidation = Joi.number().positive().required();
 
 export {
     createMyprojectValidation,
-
+    getMyprojectValidation,
 }
