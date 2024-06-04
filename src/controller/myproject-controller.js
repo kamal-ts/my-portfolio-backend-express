@@ -27,7 +27,24 @@ const get = async (req, res, next) => {
     }
 }
 
+const update = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const myprojectId = req.params.myprojectId;
+        const request = req.body;
+        request.id = myprojectId;
+
+        const result = await myprojectService.update(user, request);
+        res.status(200).json({
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+}   
+
 export default {
     create,
-    get
+    get,
+    update,
 }

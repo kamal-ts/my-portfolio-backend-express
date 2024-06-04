@@ -55,13 +55,13 @@ Response Body :
     "data": {
         "id": 1,
         "title": "new project",
-        "date": "date",
         "tag": "tag",
         "category": "category",
         "description": "description project",
         "link_web": "url project",
         "link_git": "url github",
-        "image": "project.jpg"
+        "image": "project.jpg",
+        "createdAt": "true"
     }
 }
 ```
@@ -78,7 +78,6 @@ Request Body :
 ```json
 {
     "title": "new project",
-    "date": "date",
     "tag": "tag",
     "category": "category",
     "description": "description project",
@@ -95,13 +94,14 @@ Response Body :
     "data": {
         "id": 1,
         "title": "new project",
-        "date": "date",
         "tag": "tag",
         "category": "category",
         "description": "description project",
         "link_web": "url project",
         "link_git": "url github",
-        "image": "project.jpg"
+        "image": "project.jpg",
+        "createdAt": "true",
+        "updatedAt": "true"
     }
 }
 ```
@@ -149,7 +149,10 @@ Response Body :
             "description": "description project",
             "link_web": "url project",
             "link_git": "url github",
-            "image": "project.jpg"
+            "image": "project.jpg",
+            "createdAt": "true",
+            "updatedAt": "true"
+
         },
         {
             "id": 1,
@@ -160,7 +163,9 @@ Response Body :
             "description": "description project",
             "link_web": "url project",
             "link_git": "url github",
-            "image": "project.jpg"
+            "image": "project.jpg",
+            "createdAt": "true",
+            "updatedAt": "true"
         }
     ],
     "paging": {

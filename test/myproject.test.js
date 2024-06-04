@@ -106,4 +106,78 @@ describe('GET /api/myprojects/:myprojectId', function () {
         expect(result.status).toBe(404);
     });
 
+});
+
+describe('PUT /api/myprojects/:myprojectId', function () {
+    beforeEach(async () => {
+        await createTestUser();
+        await createTestMyproject();
+    });
+
+    afterEach(async () => {
+        await removeAllTestMyproject();
+        await removeTestUser();
+    });
+
+    it('Shoul able to update myproject', async () => {
+        const testMyproject = await getTestMyproject();
+        const result = await supertest(web)
+        .put(`/api/myprojects/${testMyproject.id}`)
+        .set('Authorization', 'test')
+        .send({
+            title: "test2",
+            tag: ["test", "test2"],
+            category: ["test", "test2"],
+            description: "test2",
+            link_web: "test2.web",
+            link_git: "test2.git",
+            image: "test2.jpg"
+        });
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.id).toBe(testMyproject.id);
+        expect(result.body.data.title).toBe("test2");
+        expect(result.body.data.tag).toEqual(["test", "test2"]);
+        expect(result.body.data.category).toEqual(["test", "test2"]);
+        expect(result.body.data.description).toBe("test2");
+        expect(result.body.data.link_web).toBe("test2.web");
+        expect(result.body.data.link_git).toBe("test2.git");
+        expect(result.body.data.image).toBe("test2.jpg");
+    });
+
+    it('Shoul reject if request is invalid', async () => {
+        const testMyproject = await getTestMyproject();
+        const result = await supertest(web)
+        .put(`/api/myprojects/${testMyproject.id}`)
+        .set('Authorization', 'test')
+        .send({
+            title: "",
+            tag: ["test", "test2"],
+            category: ["test", "test2"],
+            description: "",
+            link_web: "test2.web",
+            link_git: "",
+            image: "test2.jpg"
+        });
+
+        expect(result.status).toBe(400);
+    });
+
+    it('if myproject is not found', async () => {
+        const testMyproject = await getTestMyproject();
+        const result = await supertest(web)
+        .put(`/api/myprojects/${testMyproject.id + 1}`)
+        .set('Authorization', 'test')
+        .send({
+            title: "test2",
+            tag: ["test", "test2"],
+            category: ["test", "test2"],
+            description: "test2",
+            link_web: "test2.web",
+            link_git: "test2.git",
+            image: "test2.jpg"
+        });
+
+        expect(result.status).toBe(404);
+    })
 })
