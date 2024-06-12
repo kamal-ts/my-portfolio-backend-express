@@ -6,21 +6,22 @@ const createMyprojectValidation = Joi.object({
         .max(100)
         .required(),
     tag: Joi
-        .array()
-        .items(Joi
-            .string()
-            .max(100)),
+        .string()
+        .max(200)
+        .pattern(/^\S+$/)
+        .required(),
     category: Joi
-        .array()
-        .items(Joi
-            .string()
-            .max(100)),
+        .string()
+        .max(200)
+        .pattern(/^\S+$/)
+        .required(),
     description: Joi
         .string()
         .required(),
     link_web: Joi
         .string()
-        .max(100),
+        .max(100)
+        .optional(),
     link_git: Joi
         .string()
         .max(100)
@@ -28,6 +29,7 @@ const createMyprojectValidation = Joi.object({
     image: Joi
         .string()
         .max(100)
+        .optional(),
 });
 
 const getMyprojectValidation = Joi.number().positive().required();
@@ -42,21 +44,22 @@ const updateMyprojectValidation = Joi.object({
         .max(100)
         .required(),
     tag: Joi
-        .array()
-        .items(Joi
-            .string()
-            .max(100)),
+        .string()
+        .max(200)
+        .pattern(/^\S+$/)
+        .required(),
     category: Joi
-        .array()
-        .items(Joi
-            .string()
-            .max(100)),
+        .string()
+        .max(200)
+        .pattern(/^\S+$/)
+        .required(),
     description: Joi
         .string()
         .required(),
     link_web: Joi
         .string()
-        .max(100),
+        .max(100)
+        .optional(),
     link_git: Joi
         .string()
         .max(100)
@@ -64,10 +67,26 @@ const updateMyprojectValidation = Joi.object({
     image: Joi
         .string()
         .max(100)
+        .optional()
+});
+
+const searchMyprojectValidation = Joi.object({
+    page: Joi.number().min(1).positive().default(1),
+    size: Joi.number().min(1).positive().max(100).default(10),
+    title: Joi.string().optional(),
+    tag: Joi
+        .string()
+        .max(200)
+        .pattern(/^\S+$/),
+    category: Joi
+        .string()
+        .max(200)
+        .pattern(/^\S+$/),
 });
 
 export {
     createMyprojectValidation,
     getMyprojectValidation,
     updateMyprojectValidation,
+    searchMyprojectValidation
 }

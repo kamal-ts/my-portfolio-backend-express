@@ -43,8 +43,8 @@ export const createTestMyproject = async () => {
         data: {
             author: "test",
             title: "test",
-            tag: ["test"],
-            category: ["test"],
+            tag: "test",
+            category: "test",
             description: "test",
             link_web: "test.web",
             link_git: "test.git",
@@ -53,10 +53,28 @@ export const createTestMyproject = async () => {
     })
 };
 
+export const createManyTestMyproject = async () => {
+    for (let i = 0; i < 15; i++) {
+        await prismaClient.myProject.create({
+            data: {
+                author: `test`,
+                title: `test ${i}`,
+                tag: `test${i}`,
+                category: `test${i}`,
+                description: `test ${i}`,
+                link_web: `test${i}.web`,
+                link_git: `test${i}.git`,
+                image: `test${i}.jpg`
+            }
+        });
+    };
+};
+
 export const getTestMyproject = async () => {
     return prismaClient.myProject.findFirst({
-        where : {
+        where: {
             author: "test"
         }
     })
 };
+

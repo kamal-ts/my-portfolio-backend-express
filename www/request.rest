@@ -27,11 +27,12 @@ Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
 Content-Type: application/json
 
 {
-        "title": "test",
-        "tag": ["express", "nodejs"],
-        "category": ["web"],
+        "title": "test2",
+        "tag": "test1",
+        "category": "web",
         "description": "test",
         "link_web": "test.web",
         "link_git": "test.git",
         "image": "test.jpg"
 }
+

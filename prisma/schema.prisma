@@ -30,8 +30,8 @@ model User {
 model MyProject {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(100)
-  tag         String[] @db.VarChar(100)
-  category    String[] @db.VarChar(100)
+  tag         String   @db.VarChar(200)
+  category    String   @db.VarChar(200)
   description String
   link_web    String?  @db.VarChar(100)
   link_git    String   @db.VarChar(100)

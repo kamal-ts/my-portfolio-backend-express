@@ -41,10 +41,46 @@ const update = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-}   
+};
+
+const remove = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const myprojectId = req.params.myprojectId;
+        await myprojectService.remove(user, myprojectId);
+        
+        res.status(200).json({
+            data: "OK"
+        });
+    } catch (error) {
+        next(error)
+    }
+
+}
+
+const search = async (req, res, next) => {
+    try {
+
+        const request = {
+            title: req.query.title,
+            tag: req.query.tag,
+            category: req.query.category,
+            page: req.query.page,
+            size: req.query.size
+        }
+        
+        const result = await myprojectService.search(request);
+        res.status(200).json(result);
+        
+    } catch (error) {
+        next(error)
+    }
+}
 
 export default {
     create,
     get,
     update,
+    remove,
+    search,
 }

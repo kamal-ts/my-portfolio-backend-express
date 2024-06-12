@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { createTestMyproject, createTestUser, getTestMyproject, removeAllTestMyproject, removeTestUser } from "./test-util.js";
+import { createManyTestMyproject, createTestMyproject, createTestUser, getManyTestMyproject, getTestMyproject, removeAllTestMyproject, removeTestUser } from "./test-util.js";
 import { web } from "../src/application/web.js";
 
 describe('POST /api/myprojects', function () {
@@ -19,8 +19,8 @@ describe('POST /api/myprojects', function () {
             .set('Authorization', 'test')
             .send({
                 title: "test",
-                tag: ["test"],
-                category: ["test"],
+                tag: "test",
+                category: "test",
                 description: "test",
                 link_web: "test.web",
                 link_git: "test.git",
@@ -30,8 +30,8 @@ describe('POST /api/myprojects', function () {
         expect(result.status).toBe(200);
         expect(result.body.data.id).toBeDefined();
         expect(result.body.data.title).toBe("test");
-        expect(result.body.data.tag).toEqual(["test"]);
-        expect(result.body.data.category).toEqual(["test"]);
+        expect(result.body.data.tag).toBe("test");
+        expect(result.body.data.category).toBe("test");
         expect(result.body.data.description).toBe("test");
         expect(result.body.data.link_web).toBe("test.web");
         expect(result.body.data.link_git).toBe("test.git");
@@ -44,12 +44,12 @@ describe('POST /api/myprojects', function () {
             .post("/api/myprojects")
             .set('Authorization', 'test')
             .send({
-                title: "",
+                title: "test",
                 tag: "",
-                category: "",
+                category: "test",
                 description: "test",
                 link_web: "test.web",
-                link_git: "",
+                link_git: "test.git",
                 image: "test.jpg"
             });
 
@@ -89,14 +89,14 @@ describe('GET /api/myprojects/:myprojectId', function () {
         expect(result.status).toBe(200);
         expect(result.body.data.id).toBe(myproject.id);
         expect(result.body.data.title).toBe(myproject.title);
-        expect(result.body.data.tag).toEqual(myproject.tag);
-        expect(result.body.data.category).toEqual(myproject.category);
+        expect(result.body.data.tag).toBe(myproject.tag);
+        expect(result.body.data.category).toBe(myproject.category);
         expect(result.body.data.description).toBe(myproject.description);
         expect(result.body.data.link_web).toBe(myproject.link_web);
         expect(result.body.data.link_git).toBe(myproject.link_git);
         expect(result.body.data.image).toBe(myproject.image);
     });
-    
+
     it('Should return 404 if myprojectId is not found', async () => {
         const myproject = await getTestMyproject();
         const result = await supertest(web)
@@ -122,23 +122,23 @@ describe('PUT /api/myprojects/:myprojectId', function () {
     it('Shoul able to update myproject', async () => {
         const testMyproject = await getTestMyproject();
         const result = await supertest(web)
-        .put(`/api/myprojects/${testMyproject.id}`)
-        .set('Authorization', 'test')
-        .send({
-            title: "test2",
-            tag: ["test", "test2"],
-            category: ["test", "test2"],
-            description: "test2",
-            link_web: "test2.web",
-            link_git: "test2.git",
-            image: "test2.jpg"
-        });
+            .put(`/api/myprojects/${testMyproject.id}`)
+            .set('Authorization', 'test')
+            .send({
+                title: "test2",
+                tag: "test,test2",
+                category: "test,test2",
+                description: "test2",
+                link_web: "test2.web",
+                link_git: "test2.git",
+                image: "test2.jpg"
+            });
 
         expect(result.status).toBe(200);
         expect(result.body.data.id).toBe(testMyproject.id);
         expect(result.body.data.title).toBe("test2");
-        expect(result.body.data.tag).toEqual(["test", "test2"]);
-        expect(result.body.data.category).toEqual(["test", "test2"]);
+        expect(result.body.data.tag).toBe("test,test2");
+        expect(result.body.data.category).toBe("test,test2");
         expect(result.body.data.description).toBe("test2");
         expect(result.body.data.link_web).toBe("test2.web");
         expect(result.body.data.link_git).toBe("test2.git");
@@ -148,17 +148,17 @@ describe('PUT /api/myprojects/:myprojectId', function () {
     it('Shoul reject if request is invalid', async () => {
         const testMyproject = await getTestMyproject();
         const result = await supertest(web)
-        .put(`/api/myprojects/${testMyproject.id}`)
-        .set('Authorization', 'test')
-        .send({
-            title: "",
-            tag: ["test", "test2"],
-            category: ["test", "test2"],
-            description: "",
-            link_web: "test2.web",
-            link_git: "",
-            image: "test2.jpg"
-        });
+            .put(`/api/myprojects/${testMyproject.id}`)
+            .set('Authorization', 'test')
+            .send({
+                title: "test2",
+                tag: "",
+                category: "",
+                description: "test2",
+                link_web: "test2.web",
+                link_git: "test2.git",
+                image: "test2.jpg"
+            });
 
         expect(result.status).toBe(400);
     });
@@ -166,18 +166,150 @@ describe('PUT /api/myprojects/:myprojectId', function () {
     it('if myproject is not found', async () => {
         const testMyproject = await getTestMyproject();
         const result = await supertest(web)
-        .put(`/api/myprojects/${testMyproject.id + 1}`)
-        .set('Authorization', 'test')
-        .send({
-            title: "test2",
-            tag: ["test", "test2"],
-            category: ["test", "test2"],
-            description: "test2",
-            link_web: "test2.web",
-            link_git: "test2.git",
-            image: "test2.jpg"
-        });
+            .put(`/api/myprojects/${testMyproject.id + 1}`)
+            .set('Authorization', 'test')
+            .send({
+                title: "test2",
+                tag: "test,test2",
+                category: "test,test2",
+                description: "test2",
+                link_web: "test2.web",
+                link_git: "test2.git",
+                image: "test2.jpg"
+            });
 
         expect(result.status).toBe(404);
     })
-})
+});
+
+describe('DELETE /api/myprojects/:myprojectId', function () {
+    beforeEach(async () => {
+        await createTestUser();
+        await createTestMyproject();
+    });
+
+    afterEach(async () => {
+        await removeAllTestMyproject();
+        await removeTestUser();
+    });
+
+    it("Should able to remove myproject", async () => {
+        let testMyproject = await getTestMyproject();
+        const result = await supertest(web)
+            .delete('/api/myprojects/' + testMyproject.id)
+            .set('Authorization', 'test');
+
+        expect(result.status).toBe(200);
+        expect(result.body.data).toBe("OK");
+
+        testMyproject = await getTestMyproject();
+        expect(testMyproject).toBeNull();
+    });
+
+    it("Should reject if myproject is not found", async () => {
+        let testMyproject = await getTestMyproject();
+        const result = await supertest(web)
+            .delete('/api/myprojects/' + (testMyproject.id + 1))
+            .set('Authorization', 'test');
+
+        expect(result.status).toBe(404);
+    });
+});
+
+describe('GET /api/myprojects', function () {
+    beforeEach(async () => {
+        await createTestUser();
+        await createManyTestMyproject();
+    });
+
+    afterEach(async () => {
+        await removeAllTestMyproject();
+        await removeTestUser();
+    });
+
+    it('should able to search without parameter', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/');
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(10);
+        expect(result.body.paging.current_page).toBe(1);
+        expect(result.body.paging.total_page).toBe(2);
+        expect(result.body.paging.total_item).toBe(15);
+    });
+
+    it('should able to search page 2', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/')
+            .query({
+                page: 2
+            });
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(5);
+        expect(result.body.paging.current_page).toBe(2);
+        expect(result.body.paging.total_page).toBe(2);
+        expect(result.body.paging.total_item).toBe(15);
+    });
+
+    it('should able to search base on title', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/')
+            .query({
+                title: "test 1"
+            });
+        console.table(result.body.data)
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.current_page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should able to search base on tag', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/')
+            .query({
+                tag: "test1"
+            });
+        console.table(result.body.data)
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.current_page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should able to search base on category', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/')
+            .query({
+                category: "test1"
+            });
+        console.table(result.body.data)
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.current_page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    it('should able to search base on category, tag, title', async () => {
+        const result = await supertest(web)
+            .get('/api/myprojects/')
+            .query({
+                title: "test 1",
+                tag: "test1",
+                category: "test1"
+            });
+        console.table(result.body.data)
+        expect(result.status).toBe(200);
+        expect(result.body.data.length).toBe(6);
+        expect(result.body.paging.current_page).toBe(1);
+        expect(result.body.paging.total_page).toBe(1);
+        expect(result.body.paging.total_item).toBe(6);
+    });
+
+    
+});
+
