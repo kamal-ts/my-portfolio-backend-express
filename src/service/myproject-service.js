@@ -24,11 +24,10 @@ const create = async (user, request) => {
     });
 };
 
-const get = async (user, myprojectId) => {
+const get = async (myprojectId) => {
     myprojectId = validate(getMyprojectValidation, myprojectId);
     const myproject = await prismaClient.myProject.findFirst({
         where: {
-            author: user.username,
             id: myprojectId
         },
         select: {
@@ -160,7 +159,15 @@ const search = async (request) => {
     const myproject = await prismaClient.myProject.findMany({
         where,
         take: request.size,
-        skip: skip
+        skip: skip,
+        select: {
+            id: true,
+            title: true,
+            tag: true,
+            category: true,
+            image: true,
+            createdAt: true,
+        }
     });
 
     // const myprojectTest = await prismaClient.myProject.findMany({

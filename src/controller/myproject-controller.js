@@ -16,9 +16,8 @@ const create = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        const user = req.user;
         const myprojectId = req.params.myprojectId;
-        const result = await myprojectService.get(user, myprojectId);
+        const result = await myprojectService.get(myprojectId);
         res.status(200).json({
             data: result
         });

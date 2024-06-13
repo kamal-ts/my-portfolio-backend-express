@@ -80,7 +80,7 @@ describe('GET /api/myprojects/:myprojectId', function () {
         await removeTestUser();
     });
 
-    it('Should able to create new myproject', async () => {
+    it('Should able to get myproject', async () => {
         const myproject = await getTestMyproject();
         const result = await supertest(web)
             .get(`/api/myprojects/${myproject.id}`)
@@ -258,7 +258,6 @@ describe('GET /api/myprojects', function () {
             .query({
                 title: "test 1"
             });
-        console.table(result.body.data)
         expect(result.status).toBe(200);
         expect(result.body.data.length).toBe(6);
         expect(result.body.paging.current_page).toBe(1);
@@ -270,14 +269,13 @@ describe('GET /api/myprojects', function () {
         const result = await supertest(web)
             .get('/api/myprojects/')
             .query({
-                tag: "test1"
+                tag: "test10"
             });
-        console.table(result.body.data)
         expect(result.status).toBe(200);
-        expect(result.body.data.length).toBe(6);
+        expect(result.body.data.length).toBe(1);
         expect(result.body.paging.current_page).toBe(1);
         expect(result.body.paging.total_page).toBe(1);
-        expect(result.body.paging.total_item).toBe(6);
+        expect(result.body.paging.total_item).toBe(1);
     });
 
     it('should able to search base on category', async () => {
@@ -286,7 +284,6 @@ describe('GET /api/myprojects', function () {
             .query({
                 category: "test1"
             });
-        console.table(result.body.data)
         expect(result.status).toBe(200);
         expect(result.body.data.length).toBe(6);
         expect(result.body.paging.current_page).toBe(1);
@@ -302,7 +299,6 @@ describe('GET /api/myprojects', function () {
                 tag: "test1",
                 category: "test1"
             });
-        console.table(result.body.data)
         expect(result.status).toBe(200);
         expect(result.body.data.length).toBe(6);
         expect(result.body.paging.current_page).toBe(1);
