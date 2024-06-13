@@ -1,4 +1,4 @@
-import { ResponseError } from "../error/response-error.js";
+import { ValidationError } from "../error/response-error.js";
 
 const validate = (schema, request) => {
     const result = schema.validate(request, {
@@ -6,7 +6,8 @@ const validate = (schema, request) => {
         allowUnknow: false,
     });
     if (result.error) {
-        throw new ResponseError(400, result.error.message);
+        // throw new ResponseError(400, result.error.message);
+        throw new ValidationError(400, result.error.details);
     } else {
         return result.value;
     }

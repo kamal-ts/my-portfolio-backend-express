@@ -112,12 +112,7 @@ const remove = async (user, myprojectId) => {
 
 const search = async (request) => {
     request = validate(searchMyprojectValidation, request);
-
-    // 1 ( page - 1 ) * size = 0
-    // 2 ( page - 1 ) * size = 10
-
     const skip = (request.page - 1) * request.size;
-
     const where = {};
     const conditions = [];
 
@@ -134,7 +129,7 @@ const search = async (request) => {
         const searchTags = request.tag.split(',').map(tag => tag.trim());
         const searchConditions = searchTags.map(tag => ({
             tag: {
-                contains: `${tag}`,
+                contains: tag,
                 mode: 'insensitive'
             }
         }));
@@ -169,20 +164,6 @@ const search = async (request) => {
             createdAt: true,
         }
     });
-
-    // const myprojectTest = await prismaClient.myProject.findMany({
-    //     where: {
-    //         AND: [
-    //             {
-    //                 category: {
-
-    //                 }
-    //             }
-    //         ]
-    //     },
-    //     take: request.size,
-    //     skip: skip
-    // });
 
     const totalItems = await prismaClient.myProject.count({
         where

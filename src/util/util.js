@@ -7,4 +7,19 @@ export const formatData = (data) => {
     }
 
     return data;
-}
+};
+
+
+    // const myprojectTest = await prismaClient.myProject.findMany({
+    //     where: {
+    //         AND: [
+    //             {
+    //                 category: {
+
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     take: request.size,
+    //     skip: skip
+    // });
