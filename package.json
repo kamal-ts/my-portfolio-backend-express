@@ -4,6 +4,7 @@
   "description": "restfull API my web portfolio ",
   "main": "src/main.js",
   "scripts": {
+    "start": "node ./src/main.js",
     "test": "jest -i"
   },
   "jest": {
