@@ -2,7 +2,7 @@
   "name": "portfolio-backend-express",
   "version": "1.0.0",
   "description": "restfull API my web portfolio ",
-  "main": "src/main.js",
+  "main": "./src/main.js",
   "scripts": {
     "start": "node ./src/main.js",
     "test": "jest -i"
