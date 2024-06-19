@@ -1,6 +1,6 @@
 ### 
 GET http://localhost:3000/api/myprojects
-    ?tag=test1
-    # &tag=nodejs
+    ?tag=react
+    &category=web
     # &tag=laravel
     # ?category[]=web

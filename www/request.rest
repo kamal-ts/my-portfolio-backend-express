@@ -19,20 +19,19 @@ Content-Type: application/json
 
 ### 
 GET http://localhost:3000/api/users/current
-Authorization: Unknown
+Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
 
 ### 
 POST http://localhost:3000/api/myprojects
-Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
+Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
 Content-Type: application/json
 
 {
-        "title": "tag",
-        "tag": "",
-        "category": "web",
+        "title": "test3",
+        "tag": "reactNative,nodejs",
+        "category": "mobile",
         "description": "test",
         "link_web": "test.web",
-        "link_git": "test.git",
-        "image": "test.jpg"
+        "link_git": "test.git"
 }
 
