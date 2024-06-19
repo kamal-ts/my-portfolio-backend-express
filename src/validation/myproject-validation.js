@@ -26,10 +26,6 @@ const createMyprojectValidation = Joi.object({
         .string()
         .max(100)
         .required(),
-    image: Joi
-        .string()
-        .max(100)
-        .optional(),
 });
 
 const getMyprojectValidation = Joi.number().positive().required();

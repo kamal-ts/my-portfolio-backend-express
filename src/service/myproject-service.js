@@ -2,11 +2,34 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { createMyprojectValidation, getMyprojectValidation, searchMyprojectValidation, updateMyprojectValidation } from "../validation/myproject-validation.js";
 import { validate } from "../validation/validation.js";
+import path from 'path';
 
-const create = async (user, request) => {
+const create = async (user, request, file) => {
 
     const myproject = validate(createMyprojectValidation, request);
+    
     myproject.author = user.username;
+    let url = null;
+    if (file !== null) {   
+        file = file.image;
+        const fileSize = file.size;
+        const ext = path.extname(file.name);
+        const fileName = `${Date.now()}-${file.md5 + ext}`;
+        url = file ? `/uploads/${fileName}` : null; // URL or path to the image
+        const allowedType = ['.png', '.jpg', '.jpeg'];
+        if (!allowedType.includes(ext.toLocaleLowerCase())) {
+            throw new ResponseError(422, "Invalid image");
+        };
+        if (fileSize > 5000000) {
+            throw new ResponseError(422, "Image must be lest than 5 MB");
+        }
+        file.mv(`./uploads/${fileName}`, async (err) => {
+            if (err) throw new ResponseError(500, err.message);
+        });
+    };
+
+    myproject.image = url;
+
     return prismaClient.myProject.create({
         data: myproject,
         select: {

@@ -24,9 +24,7 @@ describe('POST /api/myprojects', function () {
                 description: "test",
                 link_web: "test.web",
                 link_git: "test.git",
-                image: "test.jpg"
             });
-
         expect(result.status).toBe(200);
         expect(result.body.data.id).toBeDefined();
         expect(result.body.data.title).toBe("test");
@@ -35,7 +33,7 @@ describe('POST /api/myprojects', function () {
         expect(result.body.data.description).toBe("test");
         expect(result.body.data.link_web).toBe("test.web");
         expect(result.body.data.link_git).toBe("test.git");
-        expect(result.body.data.image).toBe("test.jpg");
+        expect(result.body.data.image).toBeNull();
 
     });
 

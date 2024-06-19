@@ -5,7 +5,9 @@ const create = async (req, res, next) => {
     try {
         const user =  req.user;
         const request = req.body;
-        const result = await myprojectService.create(user, request);
+        const file = req.files ? req.files : null;
+        console.log('file', file)
+        const result = await myprojectService.create(user, request, file);
         res.status(200).json({
             data: result,
         });

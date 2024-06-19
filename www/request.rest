@@ -27,7 +27,7 @@ Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
 Content-Type: application/json
 
 {
-        "title": "",
+        "title": "tag",
         "tag": "",
         "category": "web",
         "description": "test",
