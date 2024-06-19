@@ -5,7 +5,9 @@
   "main": "./src/main.js",
   "scripts": {
     "start": "node ./src/main.js",
-    "test": "jest -i"
+    "test": "jest -i",
+    "build": "next build && npx prisma generate",
+    "postinstall": "npx prisma generate"
   },
   "jest": {
     "transform": {
