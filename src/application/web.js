@@ -7,6 +7,11 @@ import FileUpload from 'express-fileupload';
 export const web = express();
 web.use(express.json());
 web.use(FileUpload());
+
+web.get('/', function (req, res) {
+    res.send('Hello World')
+});
+
 web.use('/uploads', express.static('uploads'));
 web.use(publicRouter);
 web.use(userRouter)
