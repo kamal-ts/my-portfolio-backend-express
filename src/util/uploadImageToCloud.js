@@ -10,10 +10,10 @@ cloudinary.config({
 });
 
 const uploadImageToCloud = async (file) => {
-    file = file.image;
     console.log('file', file);
-
+    
     if (file !== null) {
+        file = file.image;
         return new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 { resource_type: 'image' },
