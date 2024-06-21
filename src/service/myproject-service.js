@@ -12,7 +12,7 @@ const create = async (user, request, file) => {
     // Upload gambar ke cloud dan tunggu hasilnya
 
     const image = await uploadImageToCloud(file);
-    myproject.image = image.secure_url;
+    myproject.image = image;
     console.log('myproject', myproject)
     const result = await prismaClient.myProject.create({
         data: myproject,

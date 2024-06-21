@@ -10,11 +10,11 @@ cloudinary.config({
 });
 
 const uploadImageToCloud = async (file) => {
-    console.log('file', file);
-    
+    // console.log('file', file);
+    let url = null;
     if (file !== null) {
         file = file.image;
-        return new Promise((resolve, reject) => {
+        url = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 { resource_type: 'image' },
                 (error, result) => {
@@ -26,8 +26,9 @@ const uploadImageToCloud = async (file) => {
                 }
             ).end(file.data);
         });
+        return url.secure_url;
     } else {
-        return null
+        return url;
     };
 }
 
