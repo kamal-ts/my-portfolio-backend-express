@@ -38,7 +38,7 @@ model MyProject {
   description String
   link_web    String?  @db.VarChar(100)
   link_git    String   @db.VarChar(100)
-  image       String?  @db.VarChar(100)
+  image       Image[]
   author      String   @db.VarChar(100)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -46,6 +46,19 @@ model MyProject {
   user User @relation(fields: [author], references: [username])
 
   @@map("myprojects")
+}
+
+model Image {
+  public_id     String @unique @db.VarChar(100)
+  secure_url    String @db.VarChar(100)
+  format        String @db.VarChar(5)
+  display_name  String @db.VarChar(100)
+  resource_type String @db.VarChar(10)
+  my_project_id Int
+
+  my_project MyProject @relation(fields: [my_project_id], references: [id])
+
+  @@map("images")
 }
 
 model Tag {

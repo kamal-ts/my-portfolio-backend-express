@@ -1,6 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { ResponseError } from '../error/response-error.js';
-
 
 // Configure Cloudinary with environment variables
 cloudinary.config({
@@ -10,11 +8,9 @@ cloudinary.config({
 });
 
 const uploadImageToCloud = async (file) => {
-    // console.log('file', file);
-    let url = null;
     if (file !== null) {
         file = file.image;
-        url = await new Promise((resolve, reject) => {
+        const result = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 { resource_type: 'image' },
                 (error, result) => {
@@ -26,9 +22,11 @@ const uploadImageToCloud = async (file) => {
                 }
             ).end(file.data);
         });
-        return url.secure_url;
+        // returning url value of image that was uoploaded on cloudinary
+        console.log('result', result)
+        return result;
     } else {
-        return url;
+        return null;
     };
 }
 

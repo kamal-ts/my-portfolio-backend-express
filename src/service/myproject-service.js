@@ -7,13 +7,10 @@ import { validate } from "../validation/validation.js";
 const create = async (user, request, file) => {
 
     const myproject = validate(createMyprojectValidation, request);
-
     myproject.author = user.username;
-    // Upload gambar ke cloud dan tunggu hasilnya
 
+    // Upload gambar ke cloud dan tunggu hasilnya
     const image = await uploadImageToCloud(file);
-    myproject.image = image;
-    console.log('myproject', myproject)
     const result = await prismaClient.myProject.create({
         data: myproject,
         select: {
@@ -24,11 +21,24 @@ const create = async (user, request, file) => {
             description: true,
             link_git: true,
             link_web: true,
-            image: true,
             createdAt: true,
             updatedAt: true
         }
     });
+
+    if (image !== null) {
+        await prismaClient.image.create({
+            data: {
+                public_id: image.public_id,
+                secure_url: image.secure_url,
+                format: image.format,
+                display_name: image.display_name,
+                resource_type: image.resource_type, 
+                my_project_id: result.id
+            }
+        })
+    }
+
     return result;
 };
 
@@ -57,7 +67,7 @@ const get = async (myprojectId) => {
     return myproject
 };
 
-const update = async (user, request) => {
+const update = async (user, request, file) => {
     const myproject = validate(updateMyprojectValidation, request);
     const countMyproject = await prismaClient.myProject.count({
         where: {
@@ -69,6 +79,8 @@ const update = async (user, request) => {
     if (countMyproject !== 1) {
         throw new ResponseError(404, "myproject is not found");
     };
+    const image = await uploadImageToCloud(file);
+    myproject.image = image;
 
     return prismaClient.myProject.update({
         where: {
@@ -168,7 +180,11 @@ const search = async (request) => {
             title: true,
             tag: true,
             category: true,
-            image: true,
+            image: {
+                select: {
+                    secure_url: true
+                }
+            },
             createdAt: true,
         }
     });
