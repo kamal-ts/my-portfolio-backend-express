@@ -56,7 +56,7 @@ model Image {
   resource_type String @db.VarChar(10)
   my_project_id Int
 
-  my_project MyProject @relation(fields: [my_project_id], references: [id])
+  my_project MyProject @relation(fields: [my_project_id], references: [id], onDelete: Cascade)
 
   @@map("images")
 }

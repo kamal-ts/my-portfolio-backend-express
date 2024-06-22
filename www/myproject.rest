@@ -4,3 +4,8 @@ GET http://localhost:3000/api/myprojects
     &category=web
     # &tag=laravel
     # ?category[]=web
+
+
+### 
+DELETE http://localhost:3000/api/myprojects/
+Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
