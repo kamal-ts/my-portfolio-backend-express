@@ -1,6 +1,6 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
-import uploadImageToCloud from "../util/uploadImageToCloud.js";
+import imageCloudinary from "../util/imageCloudinary.js";
 import { createMyprojectValidation, getMyprojectValidation, searchMyprojectValidation, updateMyprojectValidation } from "../validation/myproject-validation.js";
 import { validate } from "../validation/validation.js";
 
@@ -10,7 +10,7 @@ const create = async (user, request, file) => {
     myproject.author = user.username;
 
     // Upload gambar ke cloud dan tunggu hasilnya
-    const image = await uploadImageToCloud(file);
+    const image = await imageCloudinary.uploadImageToCloud(file);
     const result = await prismaClient.myProject.create({
         data: myproject,
         select: {
@@ -27,7 +27,7 @@ const create = async (user, request, file) => {
     });
 
     if (image !== null) {
-        await prismaClient.image.create({
+        result.image = await prismaClient.image.create({
             data: {
                 public_id: image.public_id,
                 secure_url: image.secure_url,
@@ -120,9 +120,15 @@ const remove = async (user, myprojectId) => {
     });
 
     if (totalIndDatabase !== 1) {
-        throw new ResponseError(404, "contact is not found");
+        throw new ResponseError(404, "project  ID is not found");
     };
 
+    const image = await prismaClient.image.findFirst({
+        where: { my_project_id: myprojectId}
+    })
+
+    const deleteImageFromCLoud = await imageCloudinary.deleteImageCloud(image.public_id);
+    console.log('deleteImageFromCLoud', deleteImageFromCLoud);
     return prismaClient.myProject.delete({
         where: {
             id: myprojectId

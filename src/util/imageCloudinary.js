@@ -28,6 +28,22 @@ const uploadImageToCloud = async (file) => {
     } else {
         return null;
     };
+};
+
+const deleteImageCloud = async (public_id) => {
+    if (public_id) {
+        // Delete the image from Cloudinary
+        await cloudinary.uploader.destroy(public_id, (error, result) => {
+            if (error) {
+                return error;
+            }
+            return result
+        });
+    }
+    return null
 }
 
-export default uploadImageToCloud;
+export default {
+    uploadImageToCloud,
+    deleteImageCloud
+};
