@@ -59,11 +59,7 @@ const updateMyprojectValidation = Joi.object({
     link_git: Joi
         .string()
         .max(100)
-        .required(),
-    image: Joi
-        .string()
-        .max(100)
-        .optional()
+        .required()
 });
 
 const searchMyprojectValidation = Joi.object({

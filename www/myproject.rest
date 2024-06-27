@@ -9,3 +9,17 @@ GET http://localhost:3000/api/myprojects
 ### 
 DELETE http://localhost:3000/api/myprojects/505
 Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
+
+### 
+PUT http://localhost:3000/api/myprojects/504
+Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
+Content-Type: application/json
+
+{
+        "title": "test3",
+        "tag": "reactNative,nodejs",
+        "category": "mobile",
+        "description": "test",
+        "link_web": "test.web",
+        "link_git": "test.git"
+}

@@ -36,8 +36,8 @@ const update = async (req, res, next) => {
         const myprojectId = req.params.myprojectId;
         const request = req.body;
         request.id = myprojectId;
-
-        const result = await myprojectService.update(user, request);
+        const file = req.files ? req.files : null;
+        const result = await myprojectService.update(user, request, file);
         res.status(200).json({
             data: result
         });

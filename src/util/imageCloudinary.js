@@ -41,9 +41,37 @@ const deleteImageCloud = async (public_id) => {
         });
     }
     return null
+};
+
+const updateImageCloud = async (file, public_id) => {
+    // Upload the file directly to Cloudinary from buffer
+
+    if (file !== null) {
+        const image = file.image
+        if (!image.name || !image.data) {
+            return res.status(400).send('Invalid file upload.');
+        };
+        // Upload the file directly to Cloudinary from buffer and overwrite the existing image
+        const result = await new Promise((resolve, reject)=> {
+            cloudinary.uploader.upload_stream(
+                { public_id, overwrite: true, resource_type: 'image' },
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            ).end(image.data);
+        })
+        return result;
+    }else {
+        return null;
+    }
 }
 
 export default {
     uploadImageToCloud,
-    deleteImageCloud
+    deleteImageCloud,
+    updateImageCloud
 };

@@ -9,6 +9,7 @@ const create = async (user, request, file) => {
     const myproject = validate(createMyprojectValidation, request);
     myproject.author = user.username;
 
+    console.log('file', file)
     // Upload gambar ke cloud dan tunggu hasilnya
     const image = await imageCloudinary.uploadImageToCloud(file);
     const result = await prismaClient.myProject.create({
@@ -33,7 +34,7 @@ const create = async (user, request, file) => {
                 secure_url: image.secure_url,
                 format: image.format,
                 display_name: image.display_name,
-                resource_type: image.resource_type, 
+                resource_type: image.resource_type,
                 my_project_id: result.id
             }
         })
@@ -56,7 +57,12 @@ const get = async (myprojectId) => {
             description: true,
             link_git: true,
             link_web: true,
-            image: true,
+            image: {
+                where: {
+                    secure_url: true,
+                    public_id: true
+                }
+            },
             createdAt: true,
             updatedAt: true
         }
@@ -79,10 +85,8 @@ const update = async (user, request, file) => {
     if (countMyproject !== 1) {
         throw new ResponseError(404, "myproject is not found");
     };
-    const image = await uploadImageToCloud(file);
-    myproject.image = image;
 
-    return prismaClient.myProject.update({
+    const result = await prismaClient.myProject.update({
         where: {
             id: myproject.id
         },
@@ -93,7 +97,6 @@ const update = async (user, request, file) => {
             description: myproject.description,
             link_web: myproject.link_web,
             link_git: myproject.link_git,
-            image: myproject.image,
         },
         select: {
             id: true,
@@ -103,11 +106,58 @@ const update = async (user, request, file) => {
             description: true,
             link_git: true,
             link_web: true,
-            image: true,
             createdAt: true,
             updatedAt: true
         }
     });
+
+    const findImage = await prismaClient.image.findFirst({
+        where: {
+            my_project_id: myproject.id
+        }
+    });
+
+    if (findImage !== null) {
+        console.log('jika mau update image');
+        // image arready have, but they wanna change image
+        const image = await imageCloudinary.updateImageCloud(file, findImage.public_id);
+        if (image !== null) {
+            const resultImage = await prismaClient.image.update({
+                where: {
+                    public_id: image.public_id
+                },
+                data: {
+                    secure_url: image.secure_url,
+                    format: image.format,
+                    display_name: image.display_name,
+                    resource_type: image.resource_type,
+                }
+            })
+            if (!resultImage) {
+                throw new ResponseError(404, "image's public ID is not found")
+            }
+            result.image = resultImage; 
+        }
+        
+    } else {
+        console.log('jika mau upload image' );
+        const image = await imageCloudinary.uploadImageToCloud(file);
+        if (image !== null) {
+            const resultImage = await prismaClient.image.create({
+                data: {
+                    public_id: image.public_id,
+                    secure_url: image.secure_url,
+                    format: image.format,
+                    display_name: image.display_name,
+                    resource_type: image.resource_type,
+                    my_project_id: myproject.id
+                }
+            });
+            result.image = resultImage;
+        }
+    }
+
+    return result;
 };
 
 const remove = async (user, myprojectId) => {
@@ -123,12 +173,16 @@ const remove = async (user, myprojectId) => {
         throw new ResponseError(404, "project  ID is not found");
     };
 
+    // find image from image table by myprojectId
     const image = await prismaClient.image.findFirst({
-        where: { my_project_id: myprojectId}
+        where: { my_project_id: myprojectId }
     })
 
+    // delete image form cloudinary by public_id
     const deleteImageFromCLoud = await imageCloudinary.deleteImageCloud(image.public_id);
     console.log('deleteImageFromCLoud', deleteImageFromCLoud);
+
+    // delete data myproject by myprojectId
     return prismaClient.myProject.delete({
         where: {
             id: myprojectId
