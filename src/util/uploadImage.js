@@ -1,6 +1,5 @@
 import path from 'path';
 import { ResponseError } from '../error/response-error.js';
-import dotenv from 'dotenv';
 
 const uploadImage = async (file) => {
 

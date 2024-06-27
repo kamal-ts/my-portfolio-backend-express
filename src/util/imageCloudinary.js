@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
-
+import path from 'path';
+import { ResponseError } from '../error/response-error.js';
 // Configure Cloudinary with environment variables
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,9 +8,23 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+const validationImage = (file) => {
+    const fileSize = file.size;
+    const ext = path.extname(file.name);
+    const allowedType = ['.png', '.jpg', '.jpeg'];
+    if (!allowedType.includes(ext.toLocaleLowerCase())) {
+        throw new ResponseError(422, "Invalid image");
+    };
+    if (fileSize > 5000000) {
+        throw new ResponseError(422, "Image must be lest than 5 MB");
+    };
+
+}
+
 const uploadImageToCloud = async (file) => {
     if (file !== null) {
         file = file.image;
+        validationImage(file);
         const result = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 { resource_type: 'image' },
@@ -47,7 +62,8 @@ const updateImageCloud = async (file, public_id) => {
     // Upload the file directly to Cloudinary from buffer
 
     if (file !== null) {
-        const image = file.image
+        const image = file.image;
+        validationImage(image);
         if (!image.name || !image.data) {
             return res.status(400).send('Invalid file upload.');
         };

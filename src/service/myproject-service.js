@@ -58,7 +58,7 @@ const get = async (myprojectId) => {
             link_git: true,
             link_web: true,
             image: {
-                where: {
+                select: {
                     secure_url: true,
                     public_id: true
                 }
