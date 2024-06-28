@@ -33,7 +33,6 @@ describe('POST /api/myprojects', function () {
         expect(result.body.data.description).toBe("test");
         expect(result.body.data.link_web).toBe("test.web");
         expect(result.body.data.link_git).toBe("test.git");
-        expect(result.body.data.image).toBeNull();
 
     });
 
@@ -48,7 +47,6 @@ describe('POST /api/myprojects', function () {
                 description: "test",
                 link_web: "test.web",
                 link_git: "test.git",
-                image: "test.jpg"
             });
 
         expect(result.status).toBe(400);
@@ -92,7 +90,6 @@ describe('GET /api/myprojects/:myprojectId', function () {
         expect(result.body.data.description).toBe(myproject.description);
         expect(result.body.data.link_web).toBe(myproject.link_web);
         expect(result.body.data.link_git).toBe(myproject.link_git);
-        expect(result.body.data.image).toBe(myproject.image);
     });
 
     it('Should return 404 if myprojectId is not found', async () => {
@@ -129,7 +126,6 @@ describe('PUT /api/myprojects/:myprojectId', function () {
                 description: "test2",
                 link_web: "test2.web",
                 link_git: "test2.git",
-                image: "test2.jpg"
             });
 
         expect(result.status).toBe(200);
@@ -140,7 +136,6 @@ describe('PUT /api/myprojects/:myprojectId', function () {
         expect(result.body.data.description).toBe("test2");
         expect(result.body.data.link_web).toBe("test2.web");
         expect(result.body.data.link_git).toBe("test2.git");
-        expect(result.body.data.image).toBe("test2.jpg");
     });
 
     it('Shoul reject if request is invalid', async () => {
@@ -154,8 +149,7 @@ describe('PUT /api/myprojects/:myprojectId', function () {
                 category: "",
                 description: "test2",
                 link_web: "test2.web",
-                link_git: "test2.git",
-                image: "test2.jpg"
+                link_git: "test2.git"
             });
 
         expect(result.status).toBe(400);
@@ -173,7 +167,6 @@ describe('PUT /api/myprojects/:myprojectId', function () {
                 description: "test2",
                 link_web: "test2.web",
                 link_git: "test2.git",
-                image: "test2.jpg"
             });
 
         expect(result.status).toBe(404);
@@ -304,6 +297,5 @@ describe('GET /api/myprojects', function () {
         expect(result.body.paging.total_item).toBe(6);
     });
 
-    
-});
 
+});

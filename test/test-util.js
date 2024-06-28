@@ -48,7 +48,6 @@ export const createTestMyproject = async () => {
             description: "test",
             link_web: "test.web",
             link_git: "test.git",
-            image: "test.jpg",
         }
     })
 };
@@ -64,7 +63,6 @@ export const createManyTestMyproject = async () => {
                 description: `test ${i}`,
                 link_web: `test${i}.web`,
                 link_git: `test${i}.git`,
-                image: `test${i}.jpg`
             }
         });
     };

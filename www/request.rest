@@ -23,11 +23,11 @@ Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
 
 ### 
 POST http://localhost:3000/api/myprojects
-Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
+Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
 Content-Type: application/json
 
 {
-        "title": "",
+        "title": "test1",
         "tag": "reactNative,nodejs",
         "category": "mobile",
         "description": "test",

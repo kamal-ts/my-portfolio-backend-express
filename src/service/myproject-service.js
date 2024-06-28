@@ -177,10 +177,12 @@ const remove = async (user, myprojectId) => {
     const image = await prismaClient.image.findFirst({
         where: { my_project_id: myprojectId }
     })
-
-    // delete image form cloudinary by public_id
-    const deleteImageFromCLoud = await imageCloudinary.deleteImageCloud(image.public_id);
-    console.log('deleteImageFromCLoud', deleteImageFromCLoud);
+    
+    if (image) {
+        // delete image form cloudinary by public_id
+        const deleteImageFromCLoud = await imageCloudinary.deleteImageCloud(image.public_id);
+        console.log('deleteImageFromCLoud', deleteImageFromCLoud);
+    }
 
     // delete data myproject by myprojectId
     return prismaClient.myProject.delete({

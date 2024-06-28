@@ -5,10 +5,13 @@ GET http://localhost:3000/api/myprojects
     # &tag=laravel
     # ?category[]=web
 
+### 
+GET http://localhost:3000/api/myprojects/504
+Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
 
 ### 
-DELETE http://localhost:3000/api/myprojects/505
-Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
+DELETE http://localhost:3000/api/myprojects/8063
+Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
 
 ### 
 PUT http://localhost:3000/api/myprojects/504
