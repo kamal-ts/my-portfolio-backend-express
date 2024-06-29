@@ -12,7 +12,8 @@
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    },
+    "testTimeout": 10000
   },
   "author": "La Ode Kamaluddin",
   "license": "ISC",

@@ -142,13 +142,6 @@ const logout = async (username) => {
     
 }
 
-const getUsers = async () => {
-
-    const user = await prismaClient.user.findMany();
-
-    return user;
-};
-
 export default {
     register,
     getUsers,

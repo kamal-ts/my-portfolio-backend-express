@@ -61,17 +61,6 @@ const logout = async (req, res, next) => {
     }
 }
 
-const getUsers = async (req, res, next) => {
-    try {
-        const result = await userService.getUsers(req.body);
-        res.status(200).json({
-            data: result,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
 export default  {
     register,
     login,
