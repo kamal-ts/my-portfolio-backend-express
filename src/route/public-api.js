@@ -13,5 +13,4 @@ publicRouter.get('/api/myprojects', myprojectController.search);
 
 export {
     publicRouter,
-
 }

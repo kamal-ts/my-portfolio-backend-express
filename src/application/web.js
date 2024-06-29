@@ -23,6 +23,7 @@ web.get('/', function (req, res) {
 
 web.use('/uploads', express.static('uploads'));
 web.use(publicRouter);
+web.use(userRouter);
 
 // handle error
 web.use(errorMiddleware);

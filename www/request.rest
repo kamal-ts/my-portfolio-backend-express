@@ -32,6 +32,10 @@ GET http://localhost:3000/api/users/current
 Authorization: 18c6c935-1eec-49d8-a42c-87ceda9251b2
 
 ### 
+DELETE http://localhost:3000/api/users/logout
+Authorization: 06bfbba4-21a6-47bd-8dba-b8f02cc70ccc
+
+### 
 POST http://localhost:3000/api/myprojects
 Authorization: 16380359-af50-42ab-9e2f-05bd234b483a
 Content-Type: application/json
