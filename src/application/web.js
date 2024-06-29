@@ -10,7 +10,6 @@ config();
 
 export const web = express();
 web.use(cors({
-    credentials: true,
     origin: "http://localhost:5173"
 }));
 web.use(express.json());
