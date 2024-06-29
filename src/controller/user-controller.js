@@ -67,5 +67,4 @@ export default  {
     get,
     update,
     logout,
-    getUsers
 };

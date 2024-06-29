@@ -9,9 +9,7 @@ import { config } from 'dotenv';
 config();
 
 export const web = express();
-web.use(cors({
-    origin: "http://localhost:5173"
-}));
+web.use(cors({ origin: 'http://localhost:5173' }));
 web.use(express.json());
 web.use(FileUpload({
     createParentPath: true,
@@ -25,7 +23,6 @@ web.get('/', function (req, res) {
 
 web.use('/uploads', express.static('uploads'));
 web.use(publicRouter);
-web.use(userRouter)
 
 // handle error
 web.use(errorMiddleware);
