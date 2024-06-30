@@ -9,7 +9,12 @@ import { config } from 'dotenv';
 config();
 
 export const web = express();
-web.use(cors({ origin: 'http://localhost:5173' }));
+web.use(cors({
+    origin: [
+        'http://localhost:5173',
+        "https://portfolio-react-vite-ts.vercel.app"
+    ]
+}));
 web.use(express.json());
 web.use(FileUpload({
     createParentPath: true,
