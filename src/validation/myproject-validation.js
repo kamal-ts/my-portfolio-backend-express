@@ -65,7 +65,7 @@ const updateMyprojectValidation = Joi.object({
 const searchMyprojectValidation = Joi.object({
     page: Joi.number().min(1).positive().default(1),
     size: Joi.number().min(1).positive().max(100).default(10),
-    title: Joi.string().optional(),
+    title: Joi.string().allow(''),
     tag: Joi
         .string()
         .max(200)
