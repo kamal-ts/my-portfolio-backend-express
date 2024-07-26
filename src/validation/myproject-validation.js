@@ -44,6 +44,9 @@ const updateMyprojectValidation = Joi.object({
         .max(200)
         .pattern(/^\S+$/)
         .required(),
+    status: Joi
+        .number
+        .positive(),
     category: Joi
         .string()
         .max(200)
@@ -70,6 +73,9 @@ const searchMyprojectValidation = Joi.object({
         .string()
         .max(200)
         .pattern(/^\S+$/),
+    status: Joi
+        .number
+        .positive(),
     category: Joi
         .string()
         .max(200)

@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
   // provider  = "postgresql"
   // url       = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -35,6 +35,7 @@ model MyProject {
   title       String   @db.VarChar(100)
   tag         String   @db.VarChar(200)
   category    String   @db.VarChar(200)
+  status      Int      @default(1)
   description String
   link_web    String?  @db.VarChar(100)
   link_git    String   @db.VarChar(100)

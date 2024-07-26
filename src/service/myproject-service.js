@@ -93,6 +93,7 @@ const update = async (user, request, file) => {
         data: {
             title: myproject.title,
             tag: myproject.tag,
+            status: myproject.status,
             category: myproject.category,
             description: myproject.description,
             link_web: myproject.link_web,
@@ -102,6 +103,7 @@ const update = async (user, request, file) => {
             id: true,
             title: true,
             tag: true,
+            status: true,
             category: true,
             description: true,
             link_git: true,
@@ -227,6 +229,12 @@ const search = async (request) => {
             }
         }));
         conditions.push({ OR: [...searchConditions] });
+    };
+
+    if (request.status) {
+        conditions.push({
+            status: request.status
+        });
     };
 
     if (conditions.length > 0) {
