@@ -199,7 +199,6 @@ const search = async (request) => {
     const skip = (request.page - 1) * request.size;
     const where = {};
     const conditions = [];
-
     if (request.title) {
         conditions.push({
             title: {

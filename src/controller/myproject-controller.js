@@ -67,6 +67,7 @@ const search = async (req, res, next) => {
         const request = {
             title: req.query.title,
             tag: req.query.tag,
+            status: req.query.status,
             category: req.query.category,
             page: req.query.page,
             size: req.query.size
